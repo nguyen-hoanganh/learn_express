@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    ports:
+      - 27018:27017
+      ### Ánh xạ data từ db về local để lưu trữ tránh trường hợp mongo lỗi mất dữ liệu
+    volumes:
+      - './mongodb:/data/db'
+    user: root
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Hoanganh62
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express-container
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Hoanganh62
+      ME_CONFIG_MONGODB_URL: mongodb://root:Hoanganh62@mongo:27017/
+  
+
+#docker-compose -f mongo-compose.yml up -d
+#docker-compose -f mongo-compose.yml down
+#mongosh "mongodb://root:Hoanganh62@mongo:27018" --username root --authenticationDatabase admin
+#Sample data is here:
+#https://atlas-education.s3.amazonaws.com/sampledata.archive
+#docker exec -it mongo-container bash
+#mongorestore --username root --password Hoanganh62 --authenticationDatabase admin --archive=./sampledata.archive
+
